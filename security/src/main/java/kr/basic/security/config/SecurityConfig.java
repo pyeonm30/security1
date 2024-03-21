@@ -1,27 +1,23 @@
 package kr.basic.security.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
 
 @Configuration
 @EnableWebSecurity  // Spring Security Filter가 Spring FilterChain에 등록이 된다.
 
 public class SecurityConfig{
-    @Bean
-    public BCryptPasswordEncoder encodePwd() {
-        return new BCryptPasswordEncoder();
-    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -34,14 +30,24 @@ public class SecurityConfig{
                         .anyRequest().permitAll()
         ).formLogin(formLogin->{
                     formLogin.loginPage("/loginForm")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
                     .loginProcessingUrl("/login")
-                    // /login 주소가 호출이 되면 Security가 낚아채서 대신 로그인을 진행해준다.
-                    .defaultSuccessUrl("/");
+                            .failureHandler(customAuthFailureHandler())
+                    // /login 주소가 호출이 되면 Security가 낚아채서  대신 로그인을 진행해준다.
+                    .defaultSuccessUrl("/",true);
         });
         return http.build();
     }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/favicon.ico", "/resources/**", "/error");
+    }
 
-
+    @Bean
+    AuthenticationFailureHandler customAuthFailureHandler(){
+        return new CustomAuthFailureHandler();
+    }
     /*
     기존: WebSecurityConfigurerAdapter를 상속하고 configure매소드를 오버라이딩하여 설정하는 방법
     => 현재: SecurityFilterChain을 리턴하는 메소드를 빈에 등록하는 방식(컴포넌트 방식으로 컨테이너가 관리)

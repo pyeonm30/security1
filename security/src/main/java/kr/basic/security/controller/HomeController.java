@@ -4,14 +4,15 @@ import kr.basic.security.entity.RoleUser;
 import kr.basic.security.entity.User;
 import kr.basic.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class HomeController {
 
@@ -58,4 +59,16 @@ public class HomeController {
         System.out.println("u = " + u);
         return "redirect:/loginForm";
     }
+    /* 로그인 */
+    @GetMapping("/auth/login")
+    public @ResponseBody String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "exception", required = false) String exception,
+                        Model model) {
+
+        /* 에러와 예외를 모델에 담아 view resolve */
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
+        return error.toString() + exception.toString();
+    }
+
 }
