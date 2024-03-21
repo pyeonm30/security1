@@ -95,15 +95,18 @@ public class HomeController {
     }
 
     @GetMapping("/test/login")
-    public @ResponseBody String testLogin(Authentication authentication,
+    public @ResponseBody Authentication testLogin(Authentication authentication,
                                           @AuthenticationPrincipal UserDetails userDetails){
+        if(authentication == null){
+            return null;
+        }
         System.out.println("=================");
         System.out.println("authentication=" + authentication);
 
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         System.out.println("userDetails=" + userDetails );
 
-        return "세션 정보 확인 " + userDetails.getUsername();
+        return authentication;
 
     }
 }
