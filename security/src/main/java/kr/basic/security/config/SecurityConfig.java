@@ -17,15 +17,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebSecurity  // Spring Security Filter가 Spring FilterChain에 등록이 된다.
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig{
-//        @Bean
-//    public ViewResolver viewResolver() {
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setOrder(0);
-//        resolver.setPrefix("/resources/templates/");
-//        resolver.setSuffix(".html");
-//
-//        return resolver;
-//    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
