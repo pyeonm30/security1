@@ -1,11 +1,17 @@
 package kr.basic.security.controller;
 
+import kr.basic.security.config.auth.PrincipalDetails;
 import kr.basic.security.entity.RoleUser;
 import kr.basic.security.entity.User;
 import kr.basic.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,4 +77,33 @@ public class HomeController {
         return error.toString() + exception.toString();
     }
 
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/info")
+    public @ResponseBody  String info() {
+        return "개인정보";
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')  ")
+    @GetMapping("/userData")
+    public @ResponseBody  String userData() {
+        return "유저 데이터 정보 ";
+    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/myData")
+    public @ResponseBody  String myData() {
+        return "내 정보 ";
+    }
+
+    @GetMapping("/test/login")
+    public @ResponseBody String testLogin(Authentication authentication,
+                                          @AuthenticationPrincipal UserDetails userDetails){
+        System.out.println("=================");
+        System.out.println("authentication=" + authentication);
+
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("userDetails=" + userDetails );
+
+        return "세션 정보 확인 " + userDetails.getUsername();
+
+    }
 }

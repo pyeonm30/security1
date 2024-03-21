@@ -3,6 +3,7 @@ package kr.basic.security.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,7 +16,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 @Configuration
 @EnableWebSecurity  // Spring Security Filter가 Spring FilterChain에 등록이 된다.
-
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+// secured 어노테이셔 활성화 , preAuthorize,postAuthorize 활성화
 public class SecurityConfig{
 
     @Bean
