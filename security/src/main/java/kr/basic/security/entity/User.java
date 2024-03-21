@@ -26,4 +26,11 @@ public class User {
 	private RoleUser role; //ROLE_USER, ROLE_ADMIN
 	@CreationTimestamp
 	private Timestamp createDate;
+
+
+	// OAuth를 위해 구성한 추가 필드 2개
+	private String provider;
+	private String providerId;
+
+
 }

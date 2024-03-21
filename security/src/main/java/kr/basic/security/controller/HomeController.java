@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,13 @@ public class HomeController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @GetMapping({ "", "/" })
-    public @ResponseBody String index() {
-        return "인덱스 페이지입니다.";
+    public String index() {
+        return "index";
     }
     @GetMapping("/user")
-    public @ResponseBody String user() {
-        return "user";
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("principalDetails=" + principalDetails.getUser());
+        return "user = "+ principalDetails.getUser();
     }
     @GetMapping("/admin")
     public @ResponseBody String admin() {
@@ -107,6 +109,22 @@ public class HomeController {
         System.out.println("userDetails=" + userDetails );
 
         return authentication;
+
+    }
+
+
+    // Authentication authentication 객체로 받아오나
+    //  @AuthenticationPrincipal 어노테이션으로 받아오나 똑같다.
+    // 다만 Authentication 객체 사용할때는 다운 케스팅 필요
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String testLogin(Authentication authentication, @AuthenticationPrincipal OAuth2User oauth
+    ){
+        System.out.println("=================");
+
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        System.out.println("oAuth2User=" + oAuth2User.getAttributes() );
+        System.out.println("oauth=" + oauth.getAttributes() );
+        return "oauth 세션 정보 확인 " + oAuth2User.getAttributes();
 
     }
 }

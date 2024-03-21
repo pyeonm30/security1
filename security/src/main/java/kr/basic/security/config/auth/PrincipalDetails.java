@@ -27,6 +27,11 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public PrincipalDetails(User user){
         this.user=user;
     }
+    // OAuth2.0 로그인시 사용
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;  // attributes 정보를 토대로 우리 서버 user 정보 저장
+        this.attributes = attributes;
+    }
 
     // 해당 User의 권한을 return하는 곳
     @Override
