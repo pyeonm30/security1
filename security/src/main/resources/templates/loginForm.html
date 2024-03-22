@@ -8,12 +8,16 @@
 <h1>로그인 페이지</h1>
 <hr/>
 
+
 <form action="/login" method="post">
 	<input type="text" name="username" />
 	<input type="password" name="password" />
 	<button>로그인</button>
 </form>
-<a href="/joinForm"> 회원가입 하러가기 </a>
+<br>
 <button onclick='location.href="/oauth2/authorization/google"'> 구글 로그인 하기 </button>
+<button onclick='location.href="/oauth2/authorization/naver"'> 네이버 로그인 하기 </button>
+<br>
+<a href="/joinForm"> 회원가입 하러가기 </a>
 </body>
 </html>

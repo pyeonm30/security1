@@ -26,7 +26,7 @@ public class PrincipalDetailsService implements UserDetailsService {
         User userEntity = userRepository.findByUsername(username);
         if(userEntity!=null){       // username으로 찾은 userEntity가 존재한다면
             System.out.println("유저디테일 객체 생성 userEntity = " + userEntity);
-            return new PrincipalDetails(userEntity);
+            return new PrincipalDetails(userEntity);  // 이 함수 종료할때 @AuthenticationProncpal 어노테이션의 객체가 만들어진다
         }
         return null;
     }

@@ -79,18 +79,15 @@ public class HomeController {
         return error.toString() + exception.toString();
     }
 
-    @Secured("ROLE_ADMIN")
     @GetMapping("/info")
     public @ResponseBody  String info() {
         return "개인정보";
     }
 
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')  ")
     @GetMapping("/userData")
     public @ResponseBody  String userData() {
         return "유저 데이터 정보 ";
     }
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/myData")
     public @ResponseBody  String myData() {
         return "내 정보 ";
