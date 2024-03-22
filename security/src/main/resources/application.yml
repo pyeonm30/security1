@@ -25,14 +25,3 @@ spring:
     view:
       prefix: templates/
       suffix: .html
-
-  security:
-    oauth2:
-      client:
-        registration:
-          google: # /oauth2/authorization/google 이 주소를 동작하게 한다.
-            client-id: 571367267676-g5l0n33ralf6s4bdmv5qqmb9geul6um4.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
